@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+server/students.csv
+server/students_backup.csv
+.vite
+uploads
