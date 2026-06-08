@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, Circle, Clock, FileText, Phone, XCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 function getStepIcon(step) {
   if (step.negative) return XCircle;
@@ -27,7 +28,7 @@ export default function Application() {
         legacyId: student.Legacy_ID,
         email: student.Email || "",
       });
-      const response = await fetch(`http://localhost:5000/application-status?${params.toString()}`);
+      const response = await fetch(apiUrl(`/application-status?${params.toString()}`));
       const data = await response.json();
 
       if (!response.ok || !data.success) {

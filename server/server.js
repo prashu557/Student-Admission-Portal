@@ -1,3 +1,4 @@
+import "./env.js";
 import express from "express";
 import cors from "cors";
 import fs from "fs";
@@ -6,6 +7,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import readline from "readline";
 import crypto from "crypto";
+import {
+  fetchDataverseStudent,
+  getDataverseConfigStatus,
+} from "./dataverseClient.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -149,7 +154,10 @@ const editableProfileFields = new Set([
   "Remarks",
 ]);
 
-app.use(cors());
+const port = Number(process.env.PORT || 5000);
+const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
 fs.mkdirSync(dataDir, { recursive: true });
@@ -976,6 +984,44 @@ app.get("/", (req, res) => {
   res.send("Admission CRM Backend Running");
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    service: "Admission CRM Backend",
+    port,
+    dataverse: getDataverseConfigStatus(),
+  });
+});
+
+app.get("/api/dataverse/status", (req, res) => {
+  res.json({
+    success: true,
+    dataverse: getDataverseConfigStatus(),
+  });
+});
+
+app.get("/api/dataverse/students", async (req, res) => {
+  try {
+    const data = await fetchDataverseStudent({
+      email: req.query.email,
+      legacyId: req.query.legacyId,
+    });
+
+    res.json({
+      success: true,
+      rows: data.value || [],
+      raw: data,
+    });
+  } catch (error) {
+    console.error("DATAVERSE_STUDENTS_ERROR:", error);
+    res.status(503).json({
+      success: false,
+      message: error?.message || "Dataverse request failed",
+      dataverse: getDataverseConfigStatus(),
+    });
+  }
+});
+
 // --------------------
 // NOTIFICATIONS API
 // --------------------
@@ -1356,9 +1402,10 @@ app.use((error, req, res, next) => {
 // --------------------
 initializeDatabase()
   .then(() => {
-    app.listen(5000, () => {
-      console.log("Backend server running on port 5000");
+    app.listen(port, () => {
+      console.log(`Backend server running on port ${port}`);
       console.log("Using students.csv at:", csvFilePath);
+      console.log("Dataverse config:", getDataverseConfigStatus());
     });
   })
   .catch((err) => {

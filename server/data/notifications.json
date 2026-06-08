@@ -1,5 +1,27 @@
 [
   {
+    "id": "15b93bed-0c5d-4900-a139-e59f3c125fe8",
+    "legacyId": "OLD1000005",
+    "title": "Your admission query was submitted",
+    "message": "Counselor/admin team will respond to your application query.",
+    "source": "Support",
+    "type": "query",
+    "read": true,
+    "createdAt": "2026-05-27T05:37:05.062Z",
+    "readAt": "2026-05-27T05:37:17.240Z"
+  },
+  {
+    "id": "bf12ee29-6e3f-4452-8a72-0b5e2886f41e",
+    "legacyId": "OLD1000005",
+    "title": "Your application has been submitted",
+    "message": "Admission team received your application and will review it soon.",
+    "source": "Admissions",
+    "type": "application",
+    "read": true,
+    "createdAt": "2026-05-27T05:36:48.640Z",
+    "readAt": "2026-05-27T05:37:17.240Z"
+  },
+  {
     "id": "c642b7cb-c5d7-4e99-8fb9-50074fe65279",
     "legacyId": "OLD1000003",
     "title": "Your admission query was submitted",

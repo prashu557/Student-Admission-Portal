@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, IndianRupee, ReceiptText, WalletCards } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-IN", {
@@ -34,7 +35,7 @@ export default function Payment() {
         legacyId: student.Legacy_ID,
         email: student.Email || "",
       });
-      const response = await fetch(`http://localhost:5000/payments?${params.toString()}`);
+      const response = await fetch(apiUrl(`/payments?${params.toString()}`));
       const data = await response.json();
 
       if (!response.ok || !data.success) {

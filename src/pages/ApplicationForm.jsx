@@ -18,6 +18,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 const MIN_ELIGIBILITY_PERCENTAGE = 65;
 
@@ -139,7 +140,7 @@ export default function ApplicationForm() {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/submit-application", {
+      const response = await fetch(apiUrl("/submit-application"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

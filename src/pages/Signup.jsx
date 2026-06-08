@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiUrl } from "../lib/api";
 
 export default function Signup() {
 
@@ -19,7 +20,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch(apiUrl("/signup"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

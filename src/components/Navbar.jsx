@@ -15,6 +15,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { apiUrl } from '../lib/api';
 
 export default function Navbar({ toggleSidebar }) {
   const { student, logout } = useAuth();
@@ -80,7 +81,7 @@ export default function Navbar({ toggleSidebar }) {
           legacyId: student.Legacy_ID,
           email: student.Email || "",
         });
-        const response = await fetch(`http://localhost:5000/notifications?${params.toString()}`);
+        const response = await fetch(apiUrl(`/notifications?${params.toString()}`));
         const data = await response.json();
 
         if (!ignore && data.success) {
@@ -116,7 +117,7 @@ export default function Navbar({ toggleSidebar }) {
       items.map((item) => (item.id === id ? { ...item, read: true } : item))
     );
 
-    fetch(`http://localhost:5000/notifications/${id}/read`, {
+    fetch(apiUrl(`/notifications/${id}/read`), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -131,7 +132,7 @@ export default function Navbar({ toggleSidebar }) {
 
     setNotifications((items) => items.map((item) => ({ ...item, read: true })));
 
-    fetch("http://localhost:5000/notifications/read-all", {
+    fetch(apiUrl("/notifications/read-all"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CheckCircle, Eye, FileText, Loader2, UploadCloud } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png"];
@@ -46,7 +47,7 @@ export default function DocumentUploadManager({ compact = false }) {
         legacyId: student.Legacy_ID,
         email: student.Email || "",
       });
-      const response = await fetch(`http://localhost:5000/documents?${params.toString()}`);
+      const response = await fetch(apiUrl(`/documents?${params.toString()}`));
       const data = await response.json();
 
       if (!response.ok || !data.success) {
@@ -93,7 +94,7 @@ export default function DocumentUploadManager({ compact = false }) {
     setUploadingType(documentType);
 
     try {
-      const response = await fetch("http://localhost:5000/documents/upload", {
+      const response = await fetch(apiUrl("/documents/upload"), {
         method: "POST",
         body: formData,
       });
@@ -176,7 +177,7 @@ export default function DocumentUploadManager({ compact = false }) {
                   <div className="flex shrink-0 items-center gap-2">
                     {document && (
                       <a
-                        href={`http://localhost:5000/documents/file/${student.Legacy_ID}/${document.filename}?legacyId=${student.Legacy_ID}&email=${encodeURIComponent(student.Email || "")}`}
+                        href={apiUrl(`/documents/file/${student.Legacy_ID}/${document.filename}?legacyId=${student.Legacy_ID}&email=${encodeURIComponent(student.Email || "")}`)}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-indigo-600"

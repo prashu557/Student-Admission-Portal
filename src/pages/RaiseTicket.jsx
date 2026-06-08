@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { apiUrl } from "../lib/api";
 
 export default function RaiseTicket() {
   const { student } = useAuth();
@@ -37,7 +38,7 @@ export default function RaiseTicket() {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/raise-ticket", {
+      const response = await fetch(apiUrl("/raise-ticket"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

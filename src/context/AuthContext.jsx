@@ -5,6 +5,7 @@ import {
   useEffect,
   useCallback,
 } from "react";
+import { apiUrl } from "../lib/api";
 
 const AuthContext = createContext();
 
@@ -47,7 +48,7 @@ export function AuthProvider({ children }) {
       });
 
       const response = await fetch(
-        `http://localhost:5000/student?${params.toString()}`
+        apiUrl(`/student?${params.toString()}`)
       );
 
       const data = await response.json();
@@ -85,7 +86,7 @@ export function AuthProvider({ children }) {
   try {
 
     const response = await fetch(
-      "http://localhost:5000/login",
+      apiUrl("/login"),
       {
         method: "POST",
 

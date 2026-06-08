@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle, Phone, Mail, HelpCircle, Send } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 const statusStyles = {
   Pending: "bg-amber-50 text-amber-700",
@@ -31,7 +32,7 @@ export default function Support() {
         legacyId: student.Legacy_ID,
         email: student.Email || "",
       });
-      const response = await fetch(`http://localhost:5000/queries?${params.toString()}`);
+      const response = await fetch(apiUrl(`/queries?${params.toString()}`));
       const data = await response.json();
 
       if (!response.ok || !data.success) {
@@ -64,7 +65,7 @@ export default function Support() {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/queries", {
+      const response = await fetch(apiUrl("/queries"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

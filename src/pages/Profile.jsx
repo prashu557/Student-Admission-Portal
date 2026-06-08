@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Camera } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import DocumentUploadManager from "../components/DocumentUploadManager";
+import { apiUrl } from "../lib/api";
 
 const editableFields = [
   ["Student_Name", "Full Name"],
@@ -59,7 +60,7 @@ export default function Profile() {
     setSaving(true);
 
     try {
-      const response = await fetch("http://localhost:5000/student/profile", {
+      const response = await fetch(apiUrl("/student/profile"), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

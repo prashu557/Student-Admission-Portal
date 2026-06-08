@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { apiUrl } from "../lib/api";
 
 export default function NotificationPanel() {
   const { student } = useAuth();
@@ -14,7 +15,7 @@ export default function NotificationPanel() {
         legacyId: student.Legacy_ID,
         email: student.Email || "",
       });
-      const response = await fetch(`http://localhost:5000/notifications?${params.toString()}`);
+      const response = await fetch(apiUrl(`/notifications?${params.toString()}`));
       const data = await response.json();
 
       if (data.success) {
@@ -37,7 +38,7 @@ export default function NotificationPanel() {
       items.map((item) => (item.id === id ? { ...item, read: true } : item))
     );
 
-    await fetch(`http://localhost:5000/notifications/${id}/read`, {
+    await fetch(apiUrl(`/notifications/${id}/read`), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -50,7 +51,7 @@ export default function NotificationPanel() {
   const markAllAsRead = async () => {
     setNotifications((items) => items.map((item) => ({ ...item, read: true })));
 
-    await fetch("http://localhost:5000/notifications/read-all", {
+    await fetch(apiUrl("/notifications/read-all"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
